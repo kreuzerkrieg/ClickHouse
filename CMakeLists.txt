@@ -14,6 +14,7 @@ endforeach()
 
 project(ClickHouse)
 
+set (CMAKE_UNITY_BUILD_BATCH_SIZE 32)
 include (cmake/arch.cmake)
 include (cmake/target.cmake)
 include (cmake/tools.cmake)

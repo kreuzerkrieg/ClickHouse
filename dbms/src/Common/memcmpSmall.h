@@ -56,11 +56,11 @@ inline int memcmpSmallAllowOverflow15(const Char * a, size_t a_size, const Char 
             if (offset >= min_size)
                 break;
 
-            return detail::cmp(a[offset], b[offset]);
+            return ::detail::cmp(a[offset], b[offset]);
         }
     }
 
-    return detail::cmp(a_size, b_size);
+    return ::detail::cmp(a_size, b_size);
 }
 
 
@@ -84,7 +84,7 @@ inline int memcmpSmallAllowOverflow15(const Char * a, const Char * b, size_t siz
             if (offset >= size)
                 return 0;
 
-            return detail::cmp(a[offset], b[offset]);
+            return ::detail::cmp(a[offset], b[offset]);
         }
     }
 
@@ -133,7 +133,7 @@ inline int memcmpSmallMultipleOf16(const Char * a, const Char * b, size_t size)
         if (mask)
         {
             offset += __builtin_ctz(mask);
-            return detail::cmp(a[offset], b[offset]);
+            return ::detail::cmp(a[offset], b[offset]);
         }
     }
 
@@ -154,7 +154,7 @@ inline int memcmp16(const Char * a, const Char * b)
     if (mask)
     {
         auto offset = __builtin_ctz(mask);
-        return detail::cmp(a[offset], b[offset]);
+        return ::detail::cmp(a[offset], b[offset]);
     }
 
     return 0;

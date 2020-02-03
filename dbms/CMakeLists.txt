@@ -580,6 +580,9 @@ target_include_directories (clickhouse_common_io SYSTEM BEFORE PUBLIC ${DOUBLE_C
 # also for copy_headers.sh:
 target_include_directories (clickhouse_common_io BEFORE PRIVATE ${COMMON_INCLUDE_DIR})
 
+set_target_properties (clickhouse_common_io PROPERTIES UNITY_BUILD true)
+set_target_properties (dbms PROPERTIES UNITY_BUILD true)
+
 add_subdirectory (programs)
 add_subdirectory (tests)
 

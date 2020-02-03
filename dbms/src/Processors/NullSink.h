@@ -4,10 +4,10 @@
 namespace DB
 {
 
-class NullSink : public IProcessor
+class NullDataSink : public IProcessor
 {
 public:
-    explicit NullSink(Block header) : IProcessor({std::move(header)}, {}) {}
+    explicit NullDataSink(Block header) : IProcessor({std::move(header)}, {}) {}
     String getName() const override { return "NullSink"; }
 
     Status prepare() override

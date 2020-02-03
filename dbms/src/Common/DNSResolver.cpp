@@ -15,7 +15,7 @@
 
 namespace ProfileEvents
 {
-    extern Event NetworkErrors;
+    extern const Event NetworkErrors;
 }
 
 
@@ -76,15 +76,14 @@ static void splitHostAndPort(const std::string & host_and_port, std::string & ou
     }
 }
 
-static Poco::Net::IPAddress resolveIPAddressImpl(const std::string & host)
-{
-    /// NOTE: Poco::Net::DNS::resolveOne(host) doesn't work for IP addresses like 127.0.0.2
-    /// Therefore we use SocketAddress constructor with dummy port to resolve IP
-    return Poco::Net::SocketAddress(host, 0U).host();
-}
-
 struct DNSResolver::Impl
 {
+    static Poco::Net::IPAddress resolveIPAddressImpl(const std::string & host)
+    {
+        /// NOTE: Poco::Net::DNS::resolveOne(host) doesn't work for IP addresses like 127.0.0.2
+        /// Therefore we use SocketAddress constructor with dummy port to resolve IP
+        return Poco::Net::SocketAddress(host, 0U).host();
+    }
     SimpleCache<decltype(resolveIPAddressImpl), &resolveIPAddressImpl> cache_host;
 
     std::mutex drop_mutex;
@@ -109,7 +108,7 @@ DNSResolver::DNSResolver() : impl(std::make_unique<DNSResolver::Impl>()) {}
 Poco::Net::IPAddress DNSResolver::resolveHost(const std::string & host)
 {
     if (impl->disable_cache)
-        return resolveIPAddressImpl(host);
+        return DNSResolver::Impl::resolveIPAddressImpl(host);
 
     addToNewHosts(host);
     return impl->cache_host(host);

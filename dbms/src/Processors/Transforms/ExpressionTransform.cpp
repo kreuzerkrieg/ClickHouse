@@ -4,13 +4,6 @@
 namespace DB
 {
 
-static Block transformHeader(Block header, const ExpressionActionsPtr & expression)
-{
-    expression->execute(header, true);
-    return header;
-}
-
-
 ExpressionTransform::ExpressionTransform(const Block & header_, ExpressionActionsPtr expression_, bool on_totals_, bool default_totals_)
     : ISimpleTransform(header_, transformHeader(header_, expression_), on_totals_)
     , expression(std::move(expression_))

@@ -1,9 +1,9 @@
-#include <IO/ReadHelpers.h>
-
-#include <Processors/Formats/Impl/JSONEachRowRowInputFormat.h>
-#include <Formats/FormatFactory.h>
-#include <DataTypes/NestedUtils.h>
 #include <DataTypes/DataTypeNullable.h>
+#include <DataTypes/NestedUtils.h>
+#include <Formats/FormatFactory.h>
+#include <Formats/IRowInputStream.h>
+#include <IO/ReadHelpers.h>
+#include <Processors/Formats/Impl/JSONEachRowRowInputFormat.h>
 
 namespace DB
 {

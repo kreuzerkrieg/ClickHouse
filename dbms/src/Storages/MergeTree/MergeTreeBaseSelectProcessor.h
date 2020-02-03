@@ -85,4 +85,5 @@ protected:
     MergeTreeReaderPtr pre_reader;
 };
 
+static Block replaceTypes(Block && header, const MergeTreeData::DataPartPtr & data_part);
 }

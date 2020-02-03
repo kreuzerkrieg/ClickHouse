@@ -881,4 +881,9 @@ void SelectQueryExpressionAnalyzer::getAggregateInfo(Names & key_names, Aggregat
     aggregates = aggregate_descriptions;
 }
 
+Block transformHeader(Block header, const ExpressionActionsPtr & expression)
+{
+    expression->execute(header, true);
+    return header;
+}
 }

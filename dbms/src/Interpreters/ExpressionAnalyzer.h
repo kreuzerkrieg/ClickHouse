@@ -240,4 +240,5 @@ private:
     const ASTSelectQuery * getAggregatingQuery() const;
 };
 
+Block transformHeader(Block header, const ExpressionActionsPtr & expression);
 }

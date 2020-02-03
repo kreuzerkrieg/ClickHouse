@@ -1,11 +1,9 @@
 #include "ProfileEventsExt.h"
-#include <Common/typeid_cast.h>
-#include <Columns/ColumnsNumber.h>
-#include <Columns/ColumnString.h>
 #include <Columns/ColumnArray.h>
-#include <DataTypes/DataTypesNumber.h>
-#include <DataTypes/DataTypeString.h>
+#include <Columns/ColumnString.h>
 #include <DataTypes/DataTypeArray.h>
+#include <Common/ProfileEvents.h>
+#include <Common/typeid_cast.h>
 
 namespace ProfileEvents
 {

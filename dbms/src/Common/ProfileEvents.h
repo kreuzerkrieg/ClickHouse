@@ -3,7 +3,7 @@
 #include <Common/VariableContext.h>
 #include <atomic>
 #include <memory>
-#include <stddef.h>
+#include <cstddef>
 
 /** Implements global counters for various events happening in the application
   *  - for high level profiling.

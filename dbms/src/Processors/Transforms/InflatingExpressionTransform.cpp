@@ -4,11 +4,6 @@
 namespace DB
 {
 
-static Block transformHeader(Block header, const ExpressionActionsPtr & expression)
-{
-    expression->execute(header, true);
-    return header;
-}
 
 InflatingExpressionTransform::InflatingExpressionTransform(Block input_header, ExpressionActionsPtr expression_,
                                                            bool on_totals_, bool default_totals_)
