@@ -1,2 +1,2 @@
-add_executable (number_traits number_traits.cpp)
+add_ch_executable (number_traits number_traits.cpp)
 target_link_libraries (number_traits PRIVATE dbms)

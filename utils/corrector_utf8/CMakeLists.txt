@@ -1,4 +1,4 @@
-add_executable(corrector_utf8 corrector_utf8.cpp)
+add_ch_executable(corrector_utf8 corrector_utf8.cpp)
 
 # Link the executable to the library.
 target_link_libraries(corrector_utf8 PRIVATE clickhouse_common_io)

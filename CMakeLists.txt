@@ -45,7 +45,7 @@ else()
 endif()
 
 # Check that submodules are present only if source was downloaded with git
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" AND NOT EXISTS "${ClickHouse_SOURCE_DIR}/contrib/boost/boost")
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" AND NOT EXISTS "${ClickHouse_SOURCE_DIR}/contrib/fastops")
     message (FATAL_ERROR "Submodules are not initialized. Run\n\tgit submodule update --init --recursive")
 endif ()
 
@@ -243,12 +243,6 @@ endif ()
 
 include(cmake/dbms_glob_sources.cmake)
 
-if (OS_LINUX)
-    include(cmake/linux/default_libs.cmake)
-elseif (OS_DARWIN)
-    include(cmake/darwin/default_libs.cmake)
-endif ()
-
 ######################################
 ### Add targets below this comment ###
 ######################################
@@ -313,64 +307,65 @@ endif ()
 message (STATUS "Building for: ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_LIBRARY_ARCHITECTURE} ; USE_STATIC_LIBRARIES=${USE_STATIC_LIBRARIES} MAKE_STATIC_LIBRARIES=${MAKE_STATIC_LIBRARIES} SPLIT_SHARED=${SPLIT_SHARED_LIBRARIES} UNBUNDLED=${UNBUNDLED} CCACHE=${CCACHE_FOUND} ${CCACHE_VERSION}")
 
 include(GNUInstallDirs)
+include (cmake/vcpkg/vcpkg.cmake)
 include (cmake/contrib_finder.cmake)
 include (cmake/lib_name.cmake)
 
-find_contrib_lib(double-conversion) # Must be before parquet
-include (cmake/find/ssl.cmake)
-include (cmake/find/icu.cmake)
-include (cmake/find/boost.cmake)
-include (cmake/find/zlib.cmake)
-include (cmake/find/zstd.cmake)
-include (cmake/find/ltdl.cmake) # for odbc
-include (cmake/find/termcap.cmake)
-include (cmake/find/odbc.cmake)
+#find_contrib_lib(double-conversion) # Must be before parquet
+#include (cmake/find/ssl.cmake)
+#include (cmake/find/icu.cmake)
+#include (cmake/find/boost.cmake)
+#include (cmake/find/zlib.cmake)
+#include (cmake/find/zstd.cmake)
+#include (cmake/find/ltdl.cmake) # for odbc
+#include (cmake/find/termcap.cmake)
+#include (cmake/find/odbc.cmake)
 # openssl, zlib, odbc before poco
-include (cmake/find/poco.cmake)
-include (cmake/find/lz4.cmake)
-include (cmake/find/xxhash.cmake)
-include (cmake/find/sparsehash.cmake)
-include (cmake/find/execinfo.cmake)
-include (cmake/find/re2.cmake)
-include (cmake/find/libgsasl.cmake)
-include (cmake/find/rdkafka.cmake)
-include (cmake/find/capnp.cmake)
-include (cmake/find/llvm.cmake)
-include (cmake/find/h3.cmake)
-include (cmake/find/cpuid.cmake) # Freebsd, bundled
-if (NOT USE_CPUID)
-    include (cmake/find/cpuinfo.cmake) # Debian
-endif()
-include (cmake/find/libxml2.cmake)
-include (cmake/find/brotli.cmake)
-include (cmake/find/protobuf.cmake)
-include (cmake/find/grpc.cmake)
-include (cmake/find/pdqsort.cmake)
-include (cmake/find/hdfs3.cmake) # uses protobuf
-include (cmake/find/s3.cmake)
-include (cmake/find/consistent-hashing.cmake)
-include (cmake/find/base64.cmake)
-include (cmake/find/parquet.cmake)
-include (cmake/find/hyperscan.cmake)
-include (cmake/find/simdjson.cmake)
-include (cmake/find/rapidjson.cmake)
-include (cmake/find/fastops.cmake)
-include (cmake/find/orc.cmake)
-include (cmake/find/avro.cmake)
+#include (cmake/find/poco.cmake)
+#include (cmake/find/lz4.cmake)
+#include (cmake/find/xxhash.cmake)
+#include (cmake/find/sparsehash.cmake)
+#include (cmake/find/execinfo.cmake)
+#include (cmake/find/re2.cmake)
+#include (cmake/find/libgsasl.cmake)
+#include (cmake/find/rdkafka.cmake)
+#include (cmake/find/capnp.cmake)
+#include (cmake/find/llvm.cmake)
+#include (cmake/find/h3.cmake)
+#include (cmake/find/cpuid.cmake) # Freebsd, bundled
+#if (NOT USE_CPUID)
+#    include (cmake/find/cpuinfo.cmake) # Debian
+#endif()
+#include (cmake/find/libxml2.cmake)
+#include (cmake/find/brotli.cmake)
+#include (cmake/find/protobuf.cmake)
+#include (cmake/find/grpc.cmake)
+#include (cmake/find/pdqsort.cmake)
+#include (cmake/find/hdfs3.cmake) # uses protobuf
+#include (cmake/find/s3.cmake)
+#include (cmake/find/consistent-hashing.cmake)
+#include (cmake/find/base64.cmake)
+#include (cmake/find/parquet.cmake)
+#include (cmake/find/hyperscan.cmake)
+#include (cmake/find/simdjson.cmake)
+#include (cmake/find/rapidjson.cmake)
+#include (cmake/find/fastops.cmake)
+#include (cmake/find/orc.cmake)
+#include (cmake/find/avro.cmake)
 
-find_contrib_lib(cityhash)
-find_contrib_lib(farmhash)
-find_contrib_lib(metrohash)
-find_contrib_lib(btrie)
+#find_contrib_lib(cityhash)
+#find_contrib_lib(farmhash)
+#find_contrib_lib(metrohash)
+#find_contrib_lib(btrie)
 
-if (ENABLE_TESTS)
-    include (cmake/find/gtest.cmake)
-endif ()
+#if (ENABLE_TESTS)
+#    include (cmake/find/gtest.cmake)
+#endif ()
 
 # Need to process before "contrib" dir:
 include (cmake/find/jemalloc.cmake)
-include (cmake/find/cctz.cmake)
-include (cmake/find/mysqlclient.cmake)
+#include (cmake/find/cctz.cmake)
+#include (cmake/find/mysqlclient.cmake)
 
 # When testing for memory leaks with Valgrind, don't link tcmalloc or jemalloc.
 
@@ -391,8 +386,8 @@ endif ()
 
 add_subdirectory (contrib EXCLUDE_FROM_ALL)
 
-macro (add_executable target)
-    # invoke built-in add_executable
+macro (add_ch_executable target)
+    # invoke built-in add_ch_executable
     # explicitly acquire and interpose malloc symbols by clickhouse_malloc
     _add_executable (${ARGV} $<TARGET_OBJECTS:clickhouse_malloc>)
     get_target_property (type ${target} TYPE)
@@ -402,6 +397,8 @@ macro (add_executable target)
     endif()
 endmacro()
 
+find_package(Poco CONFIG REQUIRED COMPONENTS Foundation)
+find_package(unofficial-cctz CONFIG REQUIRED)
 add_subdirectory (base)
 add_subdirectory (utils)
 add_subdirectory (dbms)

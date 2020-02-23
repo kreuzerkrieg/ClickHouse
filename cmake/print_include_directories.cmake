@@ -10,26 +10,6 @@ list(APPEND dirs ${dirs1})
 get_property (dirs1 TARGET common PROPERTY INCLUDE_DIRECTORIES)
 list(APPEND dirs ${dirs1})
 
-get_property (dirs1 TARGET cityhash PROPERTY INCLUDE_DIRECTORIES)
-list(APPEND dirs ${dirs1})
-
-get_property (dirs1 TARGET roaring PROPERTY INCLUDE_DIRECTORIES)
-list(APPEND dirs ${dirs1})
-
-if (TARGET double-conversion)
-    get_property (dirs1 TARGET double-conversion PROPERTY INCLUDE_DIRECTORIES)
-    list(APPEND dirs ${dirs1})
-endif ()
-
-if (TARGET ${Boost_PROGRAM_OPTIONS_LIBRARY})
-    get_property (dirs1 TARGET ${Boost_PROGRAM_OPTIONS_LIBRARY} PROPERTY INCLUDE_DIRECTORIES)
-    list(APPEND dirs ${dirs1})
-endif ()
-
-if (USE_INTERNAL_POCO_LIBRARY)
-    list(APPEND dirs "./contrib/poco/Foundation/include")
-endif ()
-
 list(REMOVE_DUPLICATES dirs)
 file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/include_directories.txt "")
 foreach (dir ${dirs})

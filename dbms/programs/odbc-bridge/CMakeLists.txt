@@ -43,7 +43,7 @@ if (OS_LINUX)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-export-dynamic")
 endif ()
 
-add_executable(clickhouse-odbc-bridge odbc-bridge.cpp)
+add_ch_executable(clickhouse-odbc-bridge odbc-bridge.cpp)
 set_target_properties(clickhouse-odbc-bridge PROPERTIES RUNTIME_OUTPUT_DIRECTORY ..)
 
 clickhouse_program_link_split_binary(odbc-bridge)
