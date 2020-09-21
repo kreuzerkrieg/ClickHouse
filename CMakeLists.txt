@@ -460,6 +460,9 @@ if (TARGET global-group)
     install (EXPORT global DESTINATION cmake)
 endif ()
 
+# jemalloc/tcmalloc-cpp/no
+add_library (allocator INTERFACE)
+
 add_subdirectory (contrib EXCLUDE_FROM_ALL)
 
 if (NOT ENABLE_JEMALLOC)
@@ -473,7 +476,7 @@ macro (add_executable target)
     get_target_property (type ${target} TYPE)
     if (${type} STREQUAL EXECUTABLE)
         # operator::new/delete for executables (MemoryTracker stuff)
-        target_link_libraries (${target} PRIVATE clickhouse_new_delete ${MALLOC_LIBRARIES})
+        target_link_libraries (${target} PRIVATE clickhouse_new_delete)
     endif()
 endmacro()
 
