@@ -38,6 +38,19 @@ struct InitializeJemallocZoneAllocatorForOSX
 /// @sa https://en.cppreference.com/w/cpp/memory/new/operator_new
 ///     https://en.cppreference.com/w/cpp/memory/new/operator_delete
 
+#ifdef USE_TCMALLOC_CPP
+#    include <tcmalloc/malloc_extension.h>
+struct ClickhouseTCMallocBootstrap
+{
+    ClickhouseTCMallocBootstrap()
+    {
+        /// See tests/allocator.cpp for information
+        tcmalloc::MallocExtension::SetProfileSamplingRate(SIZE_MAX);
+        tcmalloc::MallocExtension::SetGuardedSamplingRate(SIZE_MAX);
+    }
+} bootstrap;
+#endif
+
 namespace Memory
 {
 
@@ -95,31 +108,33 @@ inline ALWAYS_INLINE void untrackMemory(void * ptr [[maybe_unused]], std::size_t
 
 /// new
 
-void * operator new(std::size_t size)
+/*void * operator new(std::size_t size)
 {
     Memory::trackMemory(size);
     return Memory::newImpl(size);
-}
+}*/
 
+/*
 void * operator new[](std::size_t size)
 {
     Memory::trackMemory(size);
     return Memory::newImpl(size);
 }
+*/
 
-void * operator new(std::size_t size, const std::nothrow_t &) noexcept
+/*void * operator new(std::size_t size, const std::nothrow_t &) noexcept
 {
     if (likely(Memory::trackMemoryNoExcept(size)))
         return Memory::newNoExept(size);
     return nullptr;
-}
+}*/
 
-void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
+/*void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
 {
     if (likely(Memory::trackMemoryNoExcept(size)))
         return Memory::newNoExept(size);
     return nullptr;
-}
+}*/
 
 /// delete
 
@@ -131,26 +146,26 @@ void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
 /// It's unspecified whether size-aware or size-unaware version is called when deleting objects of
 /// incomplete type and arrays of non-class and trivially-destructible class types.
 
-void operator delete(void * ptr) noexcept
+/*void operator delete(void * ptr) noexcept
 {
     Memory::untrackMemory(ptr);
     Memory::deleteImpl(ptr);
-}
+}*/
 
-void operator delete[](void * ptr) noexcept
+/*void operator delete[](void * ptr) noexcept
 {
     Memory::untrackMemory(ptr);
     Memory::deleteImpl(ptr);
-}
+}*/
 
-void operator delete(void * ptr, std::size_t size) noexcept
+/*void operator delete(void * ptr, std::size_t size) noexcept
 {
     Memory::untrackMemory(ptr, size);
     Memory::deleteSized(ptr, size);
-}
+}*/
 
-void operator delete[](void * ptr, std::size_t size) noexcept
+/*void operator delete[](void * ptr, std::size_t size) noexcept
 {
     Memory::untrackMemory(ptr, size);
     Memory::deleteSized(ptr, size);
-}
+}*/

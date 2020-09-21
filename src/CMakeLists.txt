@@ -126,7 +126,9 @@ add_library (clickhouse_malloc OBJECT Common/malloc.cpp)
 set_source_files_properties(Common/malloc.cpp PROPERTIES COMPILE_FLAGS "-fno-builtin")
 
 add_library (clickhouse_new_delete STATIC Common/new_delete.cpp)
-target_link_libraries (clickhouse_new_delete PRIVATE clickhouse_common_io jemalloc)
+# Use PUBLIC linkage to allow target that is linked with clickhouse_new_delete
+# uses allocator internals (statistics and so on).
+target_link_libraries (clickhouse_new_delete PUBLIC clickhouse_common_io allocator)
 
 add_subdirectory(Common/ZooKeeper)
 add_subdirectory(Common/Config)
@@ -181,7 +183,7 @@ if (MAKE_STATIC_LIBRARIES OR NOT SPLIT_SHARED_LIBRARIES)
 else()
     add_library (dbms SHARED ${dbms_headers} ${dbms_sources})
     target_link_libraries (dbms PUBLIC ${all_modules})
-    target_link_libraries (clickhouse_interpreters PRIVATE jemalloc libdivide)
+    target_link_libraries (clickhouse_interpreters PRIVATE allocator libdivide)
     list (APPEND all_modules dbms)
     # force all split libs to be linked
     set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-as-needed")

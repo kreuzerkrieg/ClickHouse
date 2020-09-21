@@ -186,3 +186,9 @@
 [submodule "contrib/cyrus-sasl"]
 	path = contrib/cyrus-sasl
 	url = https://github.com/cyrusimap/cyrus-sasl
+[submodule "contrib/abseil-cpp"]
+	path = contrib/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
+[submodule "contrib/tcmalloc-cpp"]
+	path = contrib/tcmalloc-cpp
+	url = git@github.com:kreuzerkrieg/tcmalloc.git

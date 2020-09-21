@@ -188,3 +188,5 @@ if (MAKE_STATIC_LIBRARIES)
 endif()
 
 message (STATUS "Using jemalloc")
+
+target_link_libraries (allocator INTERFACE jemalloc)
