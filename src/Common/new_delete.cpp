@@ -129,12 +129,12 @@ void * operator new[](std::size_t size)
     return nullptr;
 }*/
 
-void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
+/*void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
 {
     if (likely(Memory::trackMemoryNoExcept(size)))
         return Memory::newNoExept(size);
     return nullptr;
-}
+}*/
 
 /// delete
 
