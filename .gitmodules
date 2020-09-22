@@ -191,4 +191,4 @@
 	url = https://github.com/abseil/abseil-cpp.git
 [submodule "contrib/tcmalloc-cpp"]
 	path = contrib/tcmalloc-cpp
-	url = https://github.com/google/tcmalloc.git
+	url = https://github.com/kreuzerkrieg/tcmalloc.git
