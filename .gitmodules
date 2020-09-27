@@ -192,3 +192,6 @@
 [submodule "contrib/tcmalloc-cpp"]
 	path = contrib/tcmalloc-cpp
 	url = git@github.com:kreuzerkrieg/tcmalloc.git
+[submodule "contrib/gperftools"]
+	path = contrib/gperftools
+	url = git@github.com:kreuzerkrieg/gperftools.git
